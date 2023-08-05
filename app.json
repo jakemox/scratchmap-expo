@@ -11,20 +11,34 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jakemox.scratchmapexpo"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.jakemox.scratchmapexpo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsImpl": "mapbox",
+          "RNMapboxMapsDownloadToken": "sk.eyJ1IjoiamFrZW1veDk5IiwiYSI6ImNsaTl4M3k3dzI2b2Eza21sODN1anNtdWsifQ.ZC1nFpF4w_go3ZCMvemG3w"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ea739778-2cea-4bea-a57e-ff6e72585745"
+      }
     }
   }
 }

@@ -11,11 +11,8 @@ import { OnPressEvent } from '@rnmapbox/maps/lib/typescript/types/OnPressEvent'
 
 import StyledBottomSheetModal from './ui/StyledBottomSheetModal'
 import { H1 } from './ui/Typography'
-import { BottomSheetModal } from '@gorhom/bottom-sheet'
 
-Mapbox.setAccessToken(
-  'pk.eyJ1IjoiamFrZW1veDk5IiwiYSI6ImNqbmxtYjlvcjFtZmozcHE5aW9zN3pjeXcifQ.UCUt8f58HwBvpHcTz8JqkA'
-)
+Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || null)
 
 const ScratchMap = () => {
   const [visitedCountries, setVisitedCountries] = useState<string[]>([''])

@@ -1,5 +1,4 @@
 import { StatusBar } from 'expo-status-bar'
-import { FC } from 'react'
 import {
   ScrollView,
   ScrollViewProps,
@@ -9,26 +8,29 @@ import {
   ViewStyle,
 } from 'react-native'
 import { useAppTheme } from '../../styles/theme'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
 type ScreenWrapperProps = ScrollViewProps & {
-  children: React.ReactNode
   withScrollView?: boolean
-  style?: StyleProp<ViewStyle>
   contentContainerStyle?: StyleProp<ViewStyle>
 }
 
-const ScreenWrapper: FC<ScreenWrapperProps> = ({
-  children,
+const ScreenWrapper = ({
   withScrollView = true,
-  style,
   contentContainerStyle,
-  ...rest
-}) => {
+  children,
+  ...attr
+}: ScreenWrapperProps) => {
+  const { style, ...rest } = attr
   const theme = useAppTheme()
+  const insets = useSafeAreaInsets()
   const containerStyle = [
     styles.container,
     {
+      paddingTop: insets.top,
+      paddingBottom: insets.bottom,
+      paddingLeft: insets.left,
+      paddingRight: insets.left,
       backgroundColor: theme.colors.background,
     },
   ]
@@ -36,21 +38,21 @@ const ScreenWrapper: FC<ScreenWrapperProps> = ({
   return (
     <>
       {withScrollView ? (
-        <SafeAreaView style={[styles.rootScreen, containerStyle]}>
-          <ScrollView
-            {...rest}
-            contentContainerStyle={contentContainerStyle}
-            alwaysBounceVertical={false}
-            showsVerticalScrollIndicator={false}
-            style={style}
-          >
-            {children}
-          </ScrollView>
-        </SafeAreaView>
+        // <SafeAreaView style={[styles.rootScreen, containerStyle]}>
+        <ScrollView
+          {...rest}
+          contentContainerStyle={contentContainerStyle}
+          alwaysBounceVertical={false}
+          showsVerticalScrollIndicator={false}
+          style={[containerStyle, style]}
+        >
+          {children}
+        </ScrollView>
       ) : (
-        <SafeAreaView style={containerStyle}>
-          <View style={style}>{children}</View>
-        </SafeAreaView>
+        // </SafeAreaView>
+        // <SafeAreaView style={containerStyle}>
+        <View style={[containerStyle, style]}>{children}</View>
+        // </SafeAreaView>
       )}
     </>
   )

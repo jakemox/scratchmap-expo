@@ -13,10 +13,9 @@ type ButtonProps = PaperButtonProps & {
 const Button = ({
   variant = 'primary',
   mode = 'text',
-  compact,
-  style,
-  ...rest
+  ...attr
 }: ButtonProps) => {
+  const { compact, style, ...rest } = attr
   const theme = useAppTheme()
 
   const labelStyle = {

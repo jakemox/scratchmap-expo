@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 import Mapbox, {
   FillLayer,
@@ -10,14 +10,17 @@ import Mapbox, {
 import { OnPressEvent } from '@rnmapbox/maps/lib/typescript/types/OnPressEvent'
 
 import StyledBottomSheetModal from './ui/StyledBottomSheetModal'
-import { H1 } from './ui/Typography'
+import Typography from './ui/Typography'
+import {
+  BottomSheetView,
+  useBottomSheetDynamicSnapPoints,
+} from '@gorhom/bottom-sheet'
 
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || null)
 
 const ScratchMap = () => {
   const [visitedCountries, setVisitedCountries] = useState<string[]>([''])
 
-  const bottomSheetSnapPoints = useMemo(() => ['50%'], [])
   const bottomSheetModalRef = useRef<StyledBottomSheetModal>(null)
 
   const handlePresentModal = useCallback(() => {
@@ -26,7 +29,6 @@ const ScratchMap = () => {
 
   const handleOnCountryPress = (event: OnPressEvent) => {
     handlePresentModal()
-    // bottomSheetModalRef.current?.snapToIndex(0)
     const countryCode: string = event.features[0].properties?.iso_3166_1 || ''
     setVisitedCountries((prevVisitedCountries: string[]) => {
       if (prevVisitedCountries.includes(countryCode)) {
@@ -122,10 +124,10 @@ const ScratchMap = () => {
       </MapView>
       <StyledBottomSheetModal
         ref={bottomSheetModalRef}
+        // TODO Move index to StyledBottomSheetModal as default?
         index={0}
-        snapPoints={bottomSheetSnapPoints}
       >
-        <H1>Paris</H1>
+        <Typography variant='headlineLarge'>Paris</Typography>
       </StyledBottomSheetModal>
     </>
   )

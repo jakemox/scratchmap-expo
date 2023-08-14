@@ -1,28 +1,22 @@
 import { StyleSheet, View } from 'react-native'
-
-import Button from '../components/ui/Button'
-import ScreenWrapper from '../components/ui/ScreenWrapper'
 import { StatusBar } from 'expo-status-bar'
-import {
-  Display1,
-  Display2,
-  Display3,
-  H1,
-  H2,
-  H3,
-} from '../components/ui/Typography'
+
+import ScreenWrapper from '../components/ui/ScreenWrapper'
+import Typography from '../components/ui/Typography'
+import Container from '../components/ui/Container'
+import Button from '../components/ui/Button'
 
 const DemoScreen = () => {
   return (
     <ScreenWrapper>
       <StatusBar style='dark' />
-      <View style={styles.rootContainer}>
-        <Display1>Display 1</Display1>
-        <Display2>Display 2</Display2>
-        <Display3>Display 3</Display3>
-        <H1>Headline 1</H1>
-        <H2>Headline 2</H2>
-        <H3>Headline 3</H3>
+      <Container style={styles.rootContainer}>
+        <Typography variant='displayLarge'>Display Large</Typography>
+        <Typography variant='displayMedium'>Display Medium</Typography>
+        <Typography variant='displaySmall'>Display Small</Typography>
+        <Typography variant='headlineLarge'>Headline Large</Typography>
+        <Typography variant='headlineMedium'>Headline Medium</Typography>
+        <Typography variant='headlineSmall'>Headline Small</Typography>
         <View style={styles.row}>
           <Button style={styles.button} mode='contained'>
             Contained Primary
@@ -66,7 +60,7 @@ const DemoScreen = () => {
             Outlined Tertiary
           </Button>
         </View>
-      </View>
+      </Container>
     </ScreenWrapper>
   )
 }

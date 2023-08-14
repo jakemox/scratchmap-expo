@@ -1,5 +1,9 @@
 import { StyleSheet } from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { PaperProvider } from 'react-native-paper'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+
 import { useFonts } from 'expo-font'
 import {
   JosefinSans_400Regular,
@@ -14,10 +18,7 @@ import {
 
 import { theme } from './styles/theme'
 
-// import { SafeAreaView } from 'react-native-safe-area-context'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Navigation from './navigation'
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -35,13 +36,15 @@ export default function App() {
 
   return (
     // TODO SafeAreaProvider
-    <PaperProvider theme={theme}>
-      <GestureHandlerRootView style={styles.rootContainer}>
-        <BottomSheetModalProvider>
-          <Navigation />
-        </BottomSheetModalProvider>
-      </GestureHandlerRootView>
-    </PaperProvider>
+    <SafeAreaProvider>
+      <PaperProvider theme={theme}>
+        <GestureHandlerRootView style={styles.rootContainer}>
+          <BottomSheetModalProvider>
+            <Navigation />
+          </BottomSheetModalProvider>
+        </GestureHandlerRootView>
+      </PaperProvider>
+    </SafeAreaProvider>
   )
 }
 

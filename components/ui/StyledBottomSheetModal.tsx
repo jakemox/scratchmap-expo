@@ -1,30 +1,63 @@
 import { ForwardedRef, forwardRef, useCallback, useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { BottomSheetModal, BottomSheetModalProps } from '@gorhom/bottom-sheet'
+import {
+  BottomSheetModal,
+  BottomSheetModalProps,
+  useBottomSheetDynamicSnapPoints,
+} from '@gorhom/bottom-sheet'
 
-declare type StyledBottomSheetModal = BottomSheetModal
+import { styles as containerStyles } from './Container'
+
+// Allow type to be exported with component.
+type StyledBottomSheetModal = BottomSheetModal
+
+type StyledBottomSheetModalProps = Omit<BottomSheetModalProps, 'snapPoints'> & {
+  snapPoints?: BottomSheetModalProps['snapPoints']
+  children: React.ReactNode
+}
 
 const StyledBottomSheetModal = forwardRef<
-  BottomSheetModal,
-  BottomSheetModalProps
+  StyledBottomSheetModal,
+  StyledBottomSheetModalProps
 >(
   (
-    { children, ...rest }: BottomSheetModalProps,
-    ref: ForwardedRef<BottomSheetModal>
+    { snapPoints, children, ...rest }: StyledBottomSheetModalProps,
+    ref: ForwardedRef<StyledBottomSheetModal>
   ) => {
+    const insets = useSafeAreaInsets()
+
+    const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], [])
+
+    const {
+      animatedHandleHeight,
+      animatedSnapPoints,
+      animatedContentHeight,
+      handleContentLayout,
+    } = useBottomSheetDynamicSnapPoints(initialSnapPoints)
+
     const handleSheetChanges = useCallback((index: number) => {
       console.log('handleSheetChanges', index)
     }, [])
 
     return (
       <BottomSheetModal
+        ref={ref}
+        snapPoints={snapPoints || animatedSnapPoints}
+        handleHeight={animatedHandleHeight}
+        contentHeight={animatedContentHeight}
         onChange={handleSheetChanges}
         enablePanDownToClose
-        ref={ref}
+        style={containerStyles.root}
         {...rest}
       >
-        {children}
+        <View
+          style={{ paddingBottom: insets.bottom }}
+          onLayout={handleContentLayout}
+        >
+          {children}
+        </View>
       </BottomSheetModal>
     )
   }
@@ -32,6 +65,7 @@ const StyledBottomSheetModal = forwardRef<
 
 export default StyledBottomSheetModal
 
+// TODO Use or remove
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,

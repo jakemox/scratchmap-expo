@@ -1,5 +1,4 @@
 import { ForwardedRef, forwardRef, useCallback, useMemo } from 'react'
-import { StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import {
@@ -8,8 +7,8 @@ import {
   useBottomSheetDynamicSnapPoints,
 } from '@gorhom/bottom-sheet'
 
-import { styles as containerStyles } from './Container'
 import { useAppTheme } from '../../styles/theme'
+import Container from './Container'
 
 // Allow type to be exported with component.
 type StyledBottomSheetModal = BottomSheetModal
@@ -52,25 +51,17 @@ const StyledBottomSheetModal = forwardRef<
         contentHeight={animatedContentHeight}
         onChange={handleSheetChanges}
         enablePanDownToClose
-        style={containerStyles.root}
         {...rest}
       >
-        <View
+        <Container
           style={{ paddingBottom: insets.bottom + theme.spacing(8) }}
           onLayout={handleContentLayout}
         >
           {children}
-        </View>
+        </Container>
       </BottomSheetModal>
     )
   }
 )
 
 export default StyledBottomSheetModal
-
-// TODO Use or remove
-const styles = StyleSheet.create({
-  contentContainer: {
-    flex: 1,
-  },
-})

@@ -1,10 +1,22 @@
 import { View, StyleSheet, ViewProps } from 'react-native'
+import { useAppTheme } from '../../styles/theme'
 
-type ContainerProps = ViewProps & {}
+type ContainerProps = ViewProps & {
+  noMargin?: boolean
+}
 
-const Container = ({ style, children, ...rest }: ContainerProps) => {
+const Container = ({ noMargin, style, children, ...rest }: ContainerProps) => {
+  const theme = useAppTheme()
+
   return (
-    <View style={[style, styles.root]} {...rest}>
+    <View
+      style={[
+        { paddingHorizontal: noMargin ? 0 : theme.spacing(4) },
+        // styles.root,
+        style,
+      ]}
+      {...rest}
+    >
       {children}
     </View>
   )
@@ -12,9 +24,8 @@ const Container = ({ style, children, ...rest }: ContainerProps) => {
 
 export default Container
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   root: {
-    // TODO Theme spacer
-    paddingHorizontal: 16,
+    // flex: 1,
   },
 })

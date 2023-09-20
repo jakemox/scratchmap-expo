@@ -13,6 +13,8 @@ import CountryFlag from 'react-native-country-flag'
 import StyledBottomSheetModal from './ui/StyledBottomSheetModal'
 import Typography from './ui/Typography'
 import Button from './ui/Button'
+import Grid from './ui/grid/Grid'
+import Item from './ui/grid/Item'
 
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || null)
 
@@ -145,29 +147,33 @@ const ScratchMap = () => {
         // TODO Move index to StyledBottomSheetModal as default?
         index={0}
       >
-        <View style={styles.countryName}>
-          <CountryFlag
-            isoCode={selectedCountry.code}
-            size={30}
-            style={styles.countryFlag}
-          />
-          <Typography variant='headlineMedium' style={styles.countryNameText}>
-            {selectedCountry.name}
-          </Typography>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button mode='contained' variant='tertiary' fullWidth>
-            Explore
-          </Button>
-          <Button
-            mode='contained'
-            variant='secondary'
-            fullWidth
-            onPress={countryVisitedHandler}
-          >
-            Visited
-          </Button>
-        </View>
+        <Grid>
+          <Item style={styles.countryName}>
+            <CountryFlag
+              isoCode={selectedCountry.code}
+              size={30}
+              style={styles.countryFlag}
+            />
+            <Typography variant='headlineMedium' style={styles.countryNameText}>
+              {selectedCountry.name}
+            </Typography>
+          </Item>
+          <Item cols={6}>
+            <Button mode='contained' variant='tertiary' fullWidth>
+              Explore
+            </Button>
+          </Item>
+          <Item cols={6}>
+            <Button
+              mode='contained'
+              variant='secondary'
+              fullWidth
+              onPress={countryVisitedHandler}
+            >
+              Visited
+            </Button>
+          </Item>
+        </Grid>
       </StyledBottomSheetModal>
     </>
   )
@@ -191,8 +197,5 @@ const styles = StyleSheet.create({
   },
   countryNameText: {
     marginBottom: 0,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
   },
 })

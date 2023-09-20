@@ -1,5 +1,5 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
-import { StyleSheet } from 'react-native'
+import { useCallback, useRef, useState } from 'react'
+import { StyleSheet, View } from 'react-native'
 
 import Mapbox, {
   FillLayer,
@@ -8,33 +8,47 @@ import Mapbox, {
   LineLayer,
 } from '@rnmapbox/maps'
 import { OnPressEvent } from '@rnmapbox/maps/lib/typescript/types/OnPressEvent'
+import CountryFlag from 'react-native-country-flag'
 
 import StyledBottomSheetModal from './ui/StyledBottomSheetModal'
 import Typography from './ui/Typography'
-import {
-  BottomSheetView,
-  useBottomSheetDynamicSnapPoints,
-} from '@gorhom/bottom-sheet'
+import Button from './ui/Button'
 
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || null)
 
 const ScratchMap = () => {
+  const [selectedCountry, setSelectedCountry] = useState<{
+    name: string
+    code: string
+  }>({ name: '', code: '' })
   const [visitedCountries, setVisitedCountries] = useState<string[]>([''])
 
   const bottomSheetModalRef = useRef<StyledBottomSheetModal>(null)
 
-  const handlePresentModal = useCallback(() => {
+  const presentModalHandler = useCallback(() => {
     bottomSheetModalRef.current?.present()
   }, [])
 
-  const handleOnCountryPress = (event: OnPressEvent) => {
-    handlePresentModal()
-    const countryCode: string = event.features[0].properties?.iso_3166_1 || ''
+  const closeModalHandler = useCallback(() => {
+    bottomSheetModalRef.current?.close()
+  }, [])
+
+  const countryPressHandler = (event: OnPressEvent) => {
+    // const countryCode: string = event.features[0].properties?.iso_3166_1 || ''
+    const { name_en, iso_3166_1 } = event.features[0].properties || {}
+    setSelectedCountry({ name: name_en, code: iso_3166_1 })
+    presentModalHandler()
+    console.log(event.features[0].properties)
+  }
+
+  const countryVisitedHandler = () => {
     setVisitedCountries((prevVisitedCountries: string[]) => {
-      if (prevVisitedCountries.includes(countryCode)) {
-        return prevVisitedCountries.filter((country) => country !== countryCode)
+      if (prevVisitedCountries.includes(selectedCountry.code)) {
+        return prevVisitedCountries.filter(
+          (country) => country !== selectedCountry.code
+        )
       } else {
-        return [...prevVisitedCountries, countryCode]
+        return [...prevVisitedCountries, selectedCountry.code]
       }
     })
   }
@@ -45,13 +59,14 @@ const ScratchMap = () => {
         style={styles.map}
         styleURL='mapbox://styles/jakemox99/cli76zhe402re01pg4ur61fx4'
         rotateEnabled={false}
-        // scaleBarEnabled={false} Breaks the app on Android
+        scaleBarEnabled={false}
         zoomEnabled
+        onPress={closeModalHandler}
       >
         <VectorSource
           id='countrySource'
           url='mapbox://mapbox.country-boundaries-v1'
-          onPress={handleOnCountryPress}
+          onPress={countryPressHandler}
         >
           <FillLayer
             id='fillLayer'
@@ -67,6 +82,7 @@ const ScratchMap = () => {
               ],
             ]}
             belowLayerID='country-labels-md'
+            // TODO Use theme colors
             style={{
               fillColor: [
                 'step',
@@ -120,6 +136,8 @@ const ScratchMap = () => {
               ],
             }}
           />
+          {/* TODO Highlight selected country */}
+          {/* TODO Zoom into country on click */}
         </VectorSource>
       </MapView>
       <StyledBottomSheetModal
@@ -127,7 +145,29 @@ const ScratchMap = () => {
         // TODO Move index to StyledBottomSheetModal as default?
         index={0}
       >
-        <Typography variant='headlineLarge'>Paris</Typography>
+        <View style={styles.countryName}>
+          <CountryFlag
+            isoCode={selectedCountry.code}
+            size={30}
+            style={styles.countryFlag}
+          />
+          <Typography variant='headlineMedium' style={styles.countryNameText}>
+            {selectedCountry.name}
+          </Typography>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button mode='contained' variant='tertiary' fullWidth>
+            Explore
+          </Button>
+          <Button
+            mode='contained'
+            variant='secondary'
+            fullWidth
+            onPress={countryVisitedHandler}
+          >
+            Visited
+          </Button>
+        </View>
       </StyledBottomSheetModal>
     </>
   )
@@ -138,5 +178,21 @@ export default ScratchMap
 const styles = StyleSheet.create({
   map: {
     flex: 1,
+  },
+  countryName: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    // TODO Theme.spacer
+    marginBottom: 24,
+  },
+  countryFlag: {
+    marginRight: 12,
+    borderRadius: 4,
+  },
+  countryNameText: {
+    marginBottom: 0,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
   },
 })

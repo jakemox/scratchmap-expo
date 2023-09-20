@@ -7,7 +7,7 @@ const Typography = ({ style, variant, ...rest }: TextProps<Text>) => {
 
   return (
     <Text
-      style={[style, isHeading && styles.heading]}
+      style={[isHeading && styles.heading, style]}
       variant={variant}
       {...rest}
     />
@@ -19,5 +19,8 @@ export default Typography
 const styles = StyleSheet.create({
   heading: {
     textTransform: 'uppercase',
+    // TODO Theme Spacer
+    marginBottom: 16,
+    includeFontPadding: false,
   },
 })

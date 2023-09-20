@@ -8,11 +8,13 @@ import { useAppTheme } from '../../styles/theme'
 type ButtonProps = PaperButtonProps & {
   mode?: 'text' | 'contained' | 'outlined' | 'elevated'
   variant?: 'primary' | 'secondary' | 'tertiary'
+  fullWidth?: boolean
 }
 
 const Button = ({
   variant = 'primary',
   mode = 'text',
+  fullWidth,
   ...attr
 }: ButtonProps) => {
   const { compact, style, ...rest } = attr
@@ -32,7 +34,7 @@ const Button = ({
     buttonColor: theme.colors[variant],
     textColor:
       variant === 'tertiary' ? theme.colors.onSurface : theme.colors.onPrimary,
-    style,
+    style: [{ flex: fullWidth ? 1 : undefined }, style],
   }
 
   const outlinedButtonProps = {
@@ -40,7 +42,7 @@ const Button = ({
       variant === 'tertiary' ? theme.colors.onSurface : theme.colors[variant],
     style: [
       styles.outlinedButton,
-      { borderColor: theme.colors[variant] },
+      { borderColor: theme.colors[variant], flex: fullWidth ? 1 : undefined },
       style,
     ],
   }

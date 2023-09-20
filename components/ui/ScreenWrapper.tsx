@@ -8,7 +8,7 @@ import {
   ViewStyle,
 } from 'react-native'
 import { useAppTheme } from '../../styles/theme'
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 type ScreenWrapperProps = ScrollViewProps & {
   withScrollView?: boolean
@@ -38,7 +38,6 @@ const ScreenWrapper = ({
   return (
     <>
       {withScrollView ? (
-        // <SafeAreaView style={[styles.rootScreen, containerStyle]}>
         <ScrollView
           {...rest}
           contentContainerStyle={contentContainerStyle}
@@ -49,10 +48,7 @@ const ScreenWrapper = ({
           {children}
         </ScrollView>
       ) : (
-        // </SafeAreaView>
-        // <SafeAreaView style={containerStyle}>
         <View style={[containerStyle, style]}>{children}</View>
-        // </SafeAreaView>
       )}
     </>
   )

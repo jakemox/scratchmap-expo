@@ -9,6 +9,7 @@ import {
 } from '@gorhom/bottom-sheet'
 
 import { styles as containerStyles } from './Container'
+import { useAppTheme } from '../../styles/theme'
 
 // Allow type to be exported with component.
 type StyledBottomSheetModal = BottomSheetModal
@@ -26,8 +27,10 @@ const StyledBottomSheetModal = forwardRef<
     { snapPoints, children, ...rest }: StyledBottomSheetModalProps,
     ref: ForwardedRef<StyledBottomSheetModal>
   ) => {
+    const theme = useAppTheme()
     const insets = useSafeAreaInsets()
 
+    // TODO Use snapPoints prop
     const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], [])
 
     const {
@@ -53,7 +56,7 @@ const StyledBottomSheetModal = forwardRef<
         {...rest}
       >
         <View
-          style={{ paddingBottom: insets.bottom }}
+          style={{ paddingBottom: insets.bottom + theme.spacing(8) }}
           onLayout={handleContentLayout}
         >
           {children}

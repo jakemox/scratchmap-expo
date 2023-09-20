@@ -5,15 +5,21 @@ import ScreenWrapper from '../components/ui/ScreenWrapper'
 import Typography from '../components/ui/Typography'
 import Container from '../components/ui/Container'
 import Button from '../components/ui/Button'
+// import Svg, { Path } from 'react-native-svg'
+// import { Flag } from 'react-native-svg-flagkit-typescript'
 
 const DemoScreen = () => {
   return (
     <ScreenWrapper>
       <StatusBar style='dark' />
       <Container style={styles.rootContainer}>
-        <Typography variant='displayLarge'>Display Large</Typography>
+        {/* <Flag id={'JP'} width={100} height={100} /> */}
+        {/* <Svg width={20} height={20} viewBox='0 0 20 20'>
+          <Path d='M16.993 6.667H3.227l6.883 6.883 6.883-6.883z' fill='#000' />
+        </Svg> */}
+        <Typography variant='displayLarge'>Display Large j</Typography>
         <Typography variant='displayMedium'>Display Medium</Typography>
-        <Typography variant='displaySmall'>Display Small</Typography>
+        <Typography variant='displaySmall'>Display Small j</Typography>
         <Typography variant='headlineLarge'>Headline Large</Typography>
         <Typography variant='headlineMedium'>Headline Medium</Typography>
         <Typography variant='headlineSmall'>Headline Small</Typography>

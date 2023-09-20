@@ -5,10 +5,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 
 import { useFonts } from 'expo-font'
-import {
-  JosefinSans_400Regular,
-  JosefinSans_700Bold,
-} from '@expo-google-fonts/josefin-sans'
+// TODO Uninstall josefin
+import { Jost_600SemiBold } from '@expo-google-fonts/jost'
 import {
   Raleway_400Regular,
   Raleway_500Medium,
@@ -22,8 +20,7 @@ import Navigation from './navigation'
 
 export default function App() {
   let [fontsLoaded] = useFonts({
-    JosefinSans_400Regular,
-    JosefinSans_700Bold,
+    Jost_600SemiBold,
     Raleway_400Regular,
     Raleway_500Medium,
     Raleway_600SemiBold,
@@ -35,7 +32,6 @@ export default function App() {
   }
 
   return (
-    // TODO SafeAreaProvider
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
         <GestureHandlerRootView style={styles.rootContainer}>

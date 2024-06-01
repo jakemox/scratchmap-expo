@@ -1,11 +1,12 @@
 import { useCallback, useRef, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 import Mapbox, {
   FillLayer,
   MapView,
   VectorSource,
   LineLayer,
+  Camera,
 } from '@rnmapbox/maps'
 import { OnPressEvent } from '@rnmapbox/maps/lib/typescript/types/OnPressEvent'
 import CountryFlag from 'react-native-country-flag'
@@ -18,11 +19,12 @@ import Item from './ui/grid/Item'
 
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || null)
 
+const DEFAULT_SELECTED_COUNTRY = { name: '', code: '' }
+
 const ScratchMap = () => {
-  const [selectedCountry, setSelectedCountry] = useState<{
-    name: string
-    code: string
-  }>({ name: '', code: '' })
+  const [selectedCountry, setSelectedCountry] = useState(
+    DEFAULT_SELECTED_COUNTRY
+  )
   const [visitedCountries, setVisitedCountries] = useState<string[]>([''])
 
   const bottomSheetModalRef = useRef<StyledBottomSheetModal>(null)
@@ -33,14 +35,14 @@ const ScratchMap = () => {
 
   const closeModalHandler = useCallback(() => {
     bottomSheetModalRef.current?.close()
+    setSelectedCountry(DEFAULT_SELECTED_COUNTRY)
   }, [])
 
   const countryPressHandler = (event: OnPressEvent) => {
-    // const countryCode: string = event.features[0].properties?.iso_3166_1 || ''
     const { name_en, iso_3166_1 } = event.features[0].properties || {}
     setSelectedCountry({ name: name_en, code: iso_3166_1 })
     presentModalHandler()
-    console.log(event.features[0].properties)
+    console.log(event.features[0])
   }
 
   const countryVisitedHandler = () => {
@@ -65,6 +67,7 @@ const ScratchMap = () => {
         zoomEnabled
         onPress={closeModalHandler}
       >
+        <Camera bounds={{ ne: [11.64, -17.93], sw: [24.08, -4.44] }} />
         <VectorSource
           id='countrySource'
           url='mapbox://mapbox.country-boundaries-v1'
@@ -112,6 +115,32 @@ const ScratchMap = () => {
               ],
             }}
           />
+          <FillLayer
+            id='highlightFillLayer'
+            sourceID='countrySource'
+            sourceLayerID='country_boundaries'
+            filter={[
+              'all',
+              ['==', ['get', 'disputed'], 'false'],
+              [
+                'any',
+                ['==', 'all', ['get', 'worldview']],
+                ['in', 'US', ['get', 'worldview']],
+              ],
+            ]}
+            belowLayerID='country-labels-md'
+            // TODO Use theme colors
+            style={{
+              fillColor: '#332014',
+              fillOpacity: [
+                'match',
+                ['get', 'iso_3166_1'],
+                selectedCountry.code,
+                0.1,
+                0,
+              ],
+            }}
+          />
           <LineLayer
             id='lineLayer'
             sourceID='countrySource'
@@ -119,7 +148,6 @@ const ScratchMap = () => {
             belowLayerID='country-labels-md'
             filter={[
               'all',
-              ['match', ['get', 'iso_3166_1'], visitedCountries, true, false],
               [
                 'any',
                 ['==', 'all', ['get', 'worldview']],
@@ -128,17 +156,22 @@ const ScratchMap = () => {
             ]}
             style={{
               lineColor: '#332014',
-              lineWidth: 1,
-              lineOpacity: [
-                'match',
-                ['get', 'iso_3166_1'],
-                visitedCountries,
+              lineWidth: [
+                'case',
+                [
+                  'match',
+                  ['get', 'iso_3166_1'],
+                  selectedCountry.code,
+                  true,
+                  false,
+                ],
+                3,
+                ['match', ['get', 'iso_3166_1'], visitedCountries, true, false],
                 1.5,
                 0,
               ],
             }}
           />
-          {/* TODO Highlight selected country */}
           {/* TODO Zoom into country on click */}
         </VectorSource>
       </MapView>

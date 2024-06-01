@@ -54,7 +54,12 @@ const StyledBottomSheetModal = forwardRef<
         {...rest}
       >
         <Container
-          style={{ paddingBottom: insets.bottom + theme.spacing(8) }}
+          style={{
+            paddingBottom:
+              insets.bottom > 0
+                ? insets.bottom + theme.spacing(4)
+                : theme.spacing(10),
+          }}
           onLayout={handleContentLayout}
         >
           {children}

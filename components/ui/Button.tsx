@@ -1,3 +1,4 @@
+import { FC } from 'react'
 import {
   Button as PaperButton,
   ButtonProps as PaperButtonProps,
@@ -5,21 +6,22 @@ import {
 import { StyleSheet } from 'react-native'
 import { useAppTheme } from '../../styles/theme'
 
-type ButtonProps = PaperButtonProps & {
+interface ButtonProps extends PaperButtonProps {
   mode?: 'text' | 'contained' | 'outlined' | 'elevated'
   variant?: 'primary' | 'secondary' | 'tertiary'
   fullWidth?: boolean
 }
 
-const Button = ({
+const Button: FC<ButtonProps> = ({
   variant = 'primary',
   mode = 'text',
   fullWidth,
   ...attr
-}: ButtonProps) => {
+}) => {
   const { compact, style, ...rest } = attr
   const theme = useAppTheme()
 
+  // TODO: Move to styles
   const labelStyle = {
     marginVertical: compact ? theme.spacing(2) : theme.spacing(3.5),
     marginHorizontal: compact ? theme.spacing(3) : theme.spacing(6), //TODO Make it so that theme styles can be used in StyleSheet

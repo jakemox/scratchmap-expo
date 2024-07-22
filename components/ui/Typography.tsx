@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
-import { Text, TextProps } from 'react-native-paper'
+import type { TextProps } from 'react-native-paper'
+import { Text } from 'react-native-paper'
 
 const Typography = ({ style, variant, ...rest }: TextProps<Text>) => {
   const isHeading =

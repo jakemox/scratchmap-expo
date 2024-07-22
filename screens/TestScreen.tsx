@@ -1,6 +1,7 @@
+import { FC } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-const TestScreen = () => {
+const TestScreen: FC = () => {
   return (
     <View style={styles.rootContainer}>
       <Text>

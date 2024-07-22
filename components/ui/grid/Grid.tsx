@@ -1,8 +1,7 @@
+import { FC } from 'react'
 import { StyleSheet, View, ViewProps } from 'react-native'
 
-type GridProps = ViewProps & {}
-
-const Grid = ({ style, children }: GridProps) => {
+const Grid: FC<ViewProps> = ({ style, children }) => {
   return <View style={[styles.root, style]}>{children}</View>
 }
 

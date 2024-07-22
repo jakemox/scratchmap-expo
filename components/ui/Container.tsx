@@ -1,7 +1,7 @@
 import { View, StyleSheet, ViewProps } from 'react-native'
 import { useAppTheme } from '../../styles/theme'
 
-type ContainerProps = ViewProps & {
+interface ContainerProps extends ViewProps {
   noMargin?: boolean
 }
 

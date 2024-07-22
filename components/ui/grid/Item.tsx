@@ -1,11 +1,12 @@
+import { FC } from 'react'
 import { StyleSheet, View, ViewProps } from 'react-native'
 
-type ItemProps = ViewProps & {
+interface ItemProps extends ViewProps {
   cols?: number
   offset?: number
 }
 
-const Item = ({ cols = 12, offset, style, children }: ItemProps) => {
+const Item: FC<ItemProps> = ({ cols = 12, offset, style, children }) => {
   return (
     <View
       style={[

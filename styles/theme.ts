@@ -1,6 +1,6 @@
 import { DefaultTheme, MD3Theme, useTheme } from 'react-native-paper'
 
-type Theme = MD3Theme & {
+interface Theme extends MD3Theme {
   spacing: (factor: number) => number
 }
 

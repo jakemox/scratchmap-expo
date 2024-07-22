@@ -1,3 +1,4 @@
+import { FC } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 
@@ -8,7 +9,7 @@ import Button from '../components/ui/Button'
 // import Svg, { Path } from 'react-native-svg'
 // import { Flag } from 'react-native-svg-flagkit-typescript'
 
-const DemoScreen = () => {
+const DemoScreen: FC = () => {
   return (
     <ScreenWrapper>
       <StatusBar style='dark' />

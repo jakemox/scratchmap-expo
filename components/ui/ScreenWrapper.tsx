@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar'
 import {
   ScrollView,
   ScrollViewProps,
@@ -10,7 +9,7 @@ import {
 import { useAppTheme } from '../../styles/theme'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-type ScreenWrapperProps = ScrollViewProps & {
+interface ScreenWrapperProps extends ScrollViewProps {
   withScrollView?: boolean
   contentContainerStyle?: StyleProp<ViewStyle>
 }
@@ -35,22 +34,18 @@ const ScreenWrapper = ({
     },
   ]
 
-  return (
-    <>
-      {withScrollView ? (
-        <ScrollView
-          {...rest}
-          contentContainerStyle={contentContainerStyle}
-          alwaysBounceVertical={false}
-          showsVerticalScrollIndicator={false}
-          style={[containerStyle, style]}
-        >
-          {children}
-        </ScrollView>
-      ) : (
-        <View style={[containerStyle, style]}>{children}</View>
-      )}
-    </>
+  return withScrollView ? (
+    <ScrollView
+      {...rest}
+      contentContainerStyle={contentContainerStyle}
+      alwaysBounceVertical={false}
+      showsVerticalScrollIndicator={false}
+      style={[containerStyle, style]}
+    >
+      {children}
+    </ScrollView>
+  ) : (
+    <View style={[containerStyle, style]}>{children}</View>
   )
 }
 

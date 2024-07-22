@@ -16,6 +16,7 @@ import Typography from './ui/Typography'
 import Button from './ui/Button'
 import Grid from './ui/grid/Grid'
 import Item from './ui/grid/Item'
+import type { BottomSheetModal } from '@gorhom/bottom-sheet'
 
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || null)
 
@@ -27,7 +28,7 @@ const ScratchMap = () => {
   )
   const [visitedCountries, setVisitedCountries] = useState<string[]>([''])
 
-  const bottomSheetModalRef = useRef<StyledBottomSheetModal>(null)
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
 
   const presentModalHandler = useCallback(() => {
     bottomSheetModalRef.current?.present()
@@ -177,8 +178,8 @@ const ScratchMap = () => {
       </MapView>
       <StyledBottomSheetModal
         ref={bottomSheetModalRef}
-        // TODO Move index to StyledBottomSheetModal as default?
         index={0}
+        enableDynamicSizing
       >
         <Grid>
           <Item style={styles.countryName}>

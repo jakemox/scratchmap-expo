@@ -1,7 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
-import { StyleSheet } from 'react-native'
-
 import Mapbox, {
+  BackgroundLayer,
   FillLayer,
   MapView,
   VectorSource,
@@ -12,17 +11,24 @@ import { OnPressEvent } from '@rnmapbox/maps/lib/typescript/types/OnPressEvent'
 import CountryFlag from 'react-native-country-flag'
 
 import StyledBottomSheetModal from './ui/StyledBottomSheetModal'
-import Typography from './ui/Typography'
+import { Text } from '@rneui/themed'
 import Button from './ui/Button'
 import Grid from './ui/grid/Grid'
 import Item from './ui/grid/Item'
 import type { BottomSheetModal } from '@gorhom/bottom-sheet'
+import { makeStyles, useTheme } from '@rneui/themed'
+import { commonColors, fonts, lightColors } from '../styles/base'
 
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || null)
 
 const DEFAULT_SELECTED_COUNTRY = { name: '', code: '' }
 
 const ScratchMap = () => {
+  const {
+    theme: { colors },
+  } = useTheme()
+  const styles = useStyles()
+
   const [selectedCountry, setSelectedCountry] = useState(
     DEFAULT_SELECTED_COUNTRY
   )
@@ -74,8 +80,20 @@ const ScratchMap = () => {
           url='mapbox://mapbox.country-boundaries-v1'
           onPress={countryPressHandler}
         >
+          <BackgroundLayer
+            id='backgroundLayer'
+            layerIndex={0}
+            style={{ backgroundColor: colors.neutral20 }}
+          />
           <FillLayer
             id='fillLayer'
+            sourceID='countrySource'
+            sourceLayerID='country_boundaries'
+            layerIndex={1}
+            style={{ fillColor: colors.neutral10 }}
+          />
+          <FillLayer
+            id='visitedFillLayer'
             sourceID='countrySource'
             sourceLayerID='country_boundaries'
             filter={[
@@ -88,24 +106,23 @@ const ScratchMap = () => {
               ],
             ]}
             belowLayerID='country-labels-md'
-            // TODO Use theme colors
             style={{
               fillColor: [
                 'step',
                 ['get', 'color_group'],
-                '#ebbe84',
+                colors.orange,
                 2,
-                '#fdecb3',
+                colors.yellow,
                 3,
-                '#669db3',
+                colors.blue,
                 4,
-                '#b5d5d7',
+                colors.lightBlue,
                 5,
-                '#cdafd5',
+                colors.violet,
                 6,
-                '#fbd1d8',
+                colors.pink,
                 7,
-                '#ebbe84',
+                colors.orange,
               ],
               fillOpacity: [
                 'match',
@@ -130,9 +147,8 @@ const ScratchMap = () => {
               ],
             ]}
             belowLayerID='country-labels-md'
-            // TODO Use theme colors
             style={{
-              fillColor: '#332014',
+              fillColor: colors.neutral90,
               fillOpacity: [
                 'match',
                 ['get', 'iso_3166_1'],
@@ -156,7 +172,7 @@ const ScratchMap = () => {
               ],
             ]}
             style={{
-              lineColor: '#332014',
+              lineColor: colors.neutral90,
               lineWidth: [
                 'case',
                 [
@@ -166,7 +182,7 @@ const ScratchMap = () => {
                   true,
                   false,
                 ],
-                3,
+                2,
                 ['match', ['get', 'iso_3166_1'], visitedCountries, true, false],
                 1.5,
                 0,
@@ -183,29 +199,43 @@ const ScratchMap = () => {
       >
         <Grid>
           <Item style={styles.countryName}>
-            <CountryFlag
+            {/* <CountryFlag
               isoCode={selectedCountry.code}
               size={30}
               style={styles.countryFlag}
-            />
-            <Typography variant='headlineMedium' style={styles.countryNameText}>
+            /> */}
+            <Text
+              h1={selectedCountry.name.length <= 12}
+              h2={
+                selectedCountry.name.length > 12 &&
+                selectedCountry.name.length <= 24
+              }
+              h3={
+                selectedCountry.name.length > 24 &&
+                selectedCountry.name.length <= 30
+              }
+              h4={selectedCountry.name.length > 30}
+              style={styles.countryNameText}
+            >
               {selectedCountry.name}
-            </Typography>
+            </Text>
           </Item>
           <Item cols={6}>
-            <Button mode='contained' variant='tertiary' fullWidth>
-              Explore
-            </Button>
+            {/* TODO Update onPress */}
+            <Button
+              title='Explore'
+              variant='tertiary'
+              fullWidth
+              onPress={countryVisitedHandler}
+            />
           </Item>
           <Item cols={6}>
             <Button
-              mode='contained'
+              title='Visited'
               variant='secondary'
               fullWidth
               onPress={countryVisitedHandler}
-            >
-              Visited
-            </Button>
+            />
           </Item>
         </Grid>
       </StyledBottomSheetModal>
@@ -215,21 +245,22 @@ const ScratchMap = () => {
 
 export default ScratchMap
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   map: {
     flex: 1,
   },
   countryName: {
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    // TODO Theme.spacer
-    marginBottom: 24,
+    marginBottom: theme.spacing.md,
   },
   countryFlag: {
-    marginRight: 12,
-    borderRadius: 4,
+    marginRight: theme.spacing.md,
   },
   countryNameText: {
+    color: theme.colors.neutral20,
     marginBottom: 0,
+    textAlign: 'center',
   },
-})
+}))

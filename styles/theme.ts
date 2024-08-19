@@ -1,71 +1,75 @@
-import { DefaultTheme, MD3Theme, useTheme } from 'react-native-paper'
+import { createTheme } from '@rneui/themed'
+import type { CreateThemeOptions } from '@rneui/themed'
+import { commonColors, fonts, lightColors } from './base'
 
-interface Theme extends MD3Theme {
-  spacing: (factor: number) => number
-}
-
-export const theme: Theme = {
-  ...DefaultTheme,
-  spacing: (factor: number) => 0.25 * factor * 16,
-  roundness: 1,
-  colors: {
-    ...DefaultTheme.colors,
-    surface: '#ffffff',
-    onSurface: '#42413F',
-    background: '#ffffff',
-    onBackground: '#42413F',
-    primary: '#1c6e70',
-    onPrimary: '#ffffff',
-    secondary: '#d9734e',
-    onSecondary: '#ffffff',
-    tertiary: '#fbd1d8',
-    onTertiary: '#42413F',
+export const theme: CreateThemeOptions = createTheme({
+  lightColors: {
+    primary: lightColors.primary.main,
+    secondary: lightColors.secondary.main,
+    tertiary: lightColors.pink,
+    neutral0: commonColors.neutral0,
+    neutral10: commonColors.neutral10,
+    neutral20: commonColors.neutral20,
+    neutral30: commonColors.neutral30,
+    neutral40: commonColors.neutral40,
+    neutral50: commonColors.neutral50,
+    neutral60: commonColors.neutral60,
+    neutral70: commonColors.neutral70,
+    neutral80: commonColors.neutral80,
+    neutral90: commonColors.neutral90,
+    neutral100: commonColors.neutral100,
+    blue: lightColors.blue,
+    lightBlue: lightColors.lightBlue,
+    orange: lightColors.orange,
+    pink: lightColors.pink,
+    violet: lightColors.violet,
+    yellow: lightColors.yellow,
   },
-  fonts: {
-    ...DefaultTheme.fonts,
-    displayLarge: {
-      ...DefaultTheme.fonts.displayLarge,
-      fontFamily: 'Jost_600SemiBold',
-      fontSize: 60,
-      lineHeight: 84,
+  mode: 'light',
+  spacing: {
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
+  },
+  components: {
+    Text: {
+      h1Style: {
+        fontFamily: fonts.primary,
+        fontSize: 48,
+        lineHeight: 60,
+        textTransform: 'uppercase',
+        includeFontPadding: false,
+      },
+      h2Style: {
+        fontFamily: fonts.primary,
+        fontSize: 40,
+        lineHeight: 50,
+        textTransform: 'uppercase',
+        includeFontPadding: false,
+      },
+      h3Style: {
+        fontFamily: fonts.primary,
+        fontSize: 32,
+        lineHeight: 40,
+        textTransform: 'uppercase',
+        includeFontPadding: false,
+      },
+      h4Style: {
+        fontFamily: fonts.primary,
+        fontSize: 24,
+        lineHeight: 30,
+        textTransform: 'uppercase',
+        includeFontPadding: false,
+      },
     },
-    displayMedium: {
-      ...DefaultTheme.fonts.displayMedium,
-      fontFamily: 'Jost_600SemiBold',
-      fontSize: 50,
-      lineHeight: 70,
-    },
-    displaySmall: {
-      ...DefaultTheme.fonts.displaySmall,
-      fontFamily: 'Jost_600SemiBold',
-      fontSize: 40,
-      lineHeight: 56,
-    },
-    headlineLarge: {
-      ...DefaultTheme.fonts.headlineLarge,
-      fontFamily: 'Jost_600SemiBold',
-      fontSize: 35,
-      lineHeight: 49,
-    },
-    headlineMedium: {
-      ...DefaultTheme.fonts.headlineMedium,
-      fontFamily: 'Jost_600SemiBold',
-      fontSize: 30,
-      lineHeight: 42,
-    },
-    headlineSmall: {
-      ...DefaultTheme.fonts.headlineSmall,
-      fontFamily: 'Jost_600SemiBold',
-      fontSize: 25,
-      lineHeight: 35,
-    },
-    labelLarge: {
-      ...DefaultTheme.fonts.labelLarge,
-      fontFamily: 'Raleway_600SemiBold',
-      // lineHeight: 16,
-      fontSize: 16,
+    Button: {
+      radius: 0,
+      titleStyle: {
+        fontFamily: fonts.primary,
+        paddingVertical: 0,
+      },
     },
   },
-}
-
-export const useAppTheme = () => useTheme<Theme>()
+})

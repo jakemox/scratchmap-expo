@@ -3,9 +3,9 @@ import { StyleSheet, View } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 
 import ScreenWrapper from '../components/ui/ScreenWrapper'
-import Typography from '../components/ui/Typography'
 import Container from '../components/ui/Container'
 import Button from '../components/ui/Button'
+import { Text } from '@rneui/themed'
 // import Svg, { Path } from 'react-native-svg'
 // import { Flag } from 'react-native-svg-flagkit-typescript'
 
@@ -18,39 +18,42 @@ const DemoScreen: FC = () => {
         {/* <Svg width={20} height={20} viewBox='0 0 20 20'>
           <Path d='M16.993 6.667H3.227l6.883 6.883 6.883-6.883z' fill='#000' />
         </Svg> */}
-        <Typography variant='displayLarge'>Display Large j</Typography>
-        <Typography variant='displayMedium'>Display Medium</Typography>
-        <Typography variant='displaySmall'>Display Small j</Typography>
-        <Typography variant='headlineLarge'>Headline Large</Typography>
-        <Typography variant='headlineMedium'>Headline Medium</Typography>
-        <Typography variant='headlineSmall'>Headline Small</Typography>
+        <Text h1>Heading 1</Text>
+        <Text h2>Heading 2</Text>
+        <Text h3>Heading 3</Text>
+        <Text h4>Heading 4</Text>
+        <Text>Body</Text>
         <View style={styles.row}>
-          <Button style={styles.button} mode='contained'>
-            Contained Primary
-          </Button>
-          <Button style={styles.button} mode='elevated'>
-            Elevated Primary
-          </Button>
-          <Button style={styles.button}>Text Primary</Button>
-          <Button style={styles.button} mode='outlined'>
-            Outlined Primary
-          </Button>
-          <Button style={styles.button} mode='contained' variant='secondary'>
-            Contained Secondary
-          </Button>
-          <Button style={styles.button} mode='outlined' variant='secondary'>
-            Outlined Secondary
-          </Button>
-          <Button style={styles.button} variant='secondary'>
-            Text Secondary
-          </Button>
-          <Button style={styles.button} mode='contained' variant='tertiary'>
-            Contained Tertiary
-          </Button>
-          <Button style={styles.button} mode='outlined' variant='tertiary'>
-            Outlined Tertiary
-          </Button>
           <Button
+            title='Solid Primary'
+            style={styles.button}
+            variant='primary'
+          />
+          {/* <Button style={styles.button}>Text Primary</Button> */}
+          {/* <Button style={styles.button}>
+            Outlined Primary
+          </Button> */}
+          <Button
+            title='Solid Secondary'
+            style={styles.button}
+            variant='secondary'
+          />
+          {/* <Button style={styles.button} mode='outlined' variant='secondary'>
+            Outlined Secondary
+          </Button> */}
+          {/* <Button style={styles.button} variant='secondary'>
+            Text Secondary
+          </Button> */}
+          <Button
+            title='Solid Tertiary'
+            style={styles.button}
+            variant='tertiary'
+            fullWidth
+          />
+          {/* <Button style={styles.button} mode='outlined' variant='tertiary'>
+            Outlined Tertiary
+          </Button> */}
+          {/* <Button
             style={styles.button}
             mode='contained'
             variant='tertiary'
@@ -65,7 +68,7 @@ const DemoScreen: FC = () => {
             compact
           >
             Outlined Tertiary
-          </Button>
+          </Button> */}
         </View>
       </Container>
     </ScreenWrapper>

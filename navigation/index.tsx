@@ -2,14 +2,15 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { FontAwesome5 } from '@expo/vector-icons'
 
-import { theme } from '../styles/theme'
-
 import MapScreen from '../screens/MapScreen'
 import DemoScreen from '../screens/DemoScreen'
+import { useTheme } from '@rneui/themed'
 
 const Tab = createBottomTabNavigator()
 
 const Navigation = () => {
+  const { theme } = useTheme()
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -17,6 +18,7 @@ const Navigation = () => {
           headerShown: false,
           // tabBarShowLabel: false,
           // tabBarLabelStyle: styles.tabBarLabel,
+          // TODO Color from theme
           tabBarInactiveTintColor: '#B3B1AB',
           tabBarActiveTintColor: theme.colors.primary,
           // tabBarStyle: styles.tabBar,

@@ -18,18 +18,22 @@ export const commonColors = {
 } as const
 
 export const lightColors = {
-  primary: {
-    main: '#1c6e70',
-  },
-  secondary: { main: '#d9734e' },
+  green: '#1c6e70',
+  lightGreen: '#8fbfa9',
+  red: '#a13532',
+  orange: '#d9734e',
+  lightOrange: '#ebbe84',
   blue: '#669db3',
   lightBlue: '#b5d5d7',
-  orange: '#ebbe84',
   pink: '#fbd1d8',
   violet: '#cdafd5',
   yellow: '#fdecb3',
-  text: commonColors.neutral80,
-  background: commonColors.neutral10,
+} as const
+
+export const darkColors = {
+  ...lightColors,
+  text: commonColors.neutral20,
+  background: commonColors.neutral90,
 } as const
 
 export const fonts = {

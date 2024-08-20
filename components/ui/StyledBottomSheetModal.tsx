@@ -1,4 +1,3 @@
-import { Text } from 'react-native'
 import { PropsWithChildren, forwardRef } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import type { EdgeInsets } from 'react-native-safe-area-context'
@@ -36,14 +35,14 @@ export default StyledBottomSheetModal
 
 const useStyles = makeStyles((theme, insets: EdgeInsets) => ({
   background: {
-    backgroundColor: theme.colors.neutral90,
+    backgroundColor: theme.colors.background,
     borderRadius: 0,
   },
   handle: {
     borderRadius: 0,
   },
   handleIndicator: {
-    backgroundColor: theme.colors.neutral20,
+    backgroundColor: theme.colors.text,
     borderRadius: 0,
     width: '25%',
     height: 2,

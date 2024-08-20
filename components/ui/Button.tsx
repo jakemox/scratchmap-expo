@@ -1,10 +1,10 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { makeStyles } from '@rneui/themed'
 import { Button as RneButton } from '@rneui/themed'
 import type { ButtonProps as RneCustomButtonProps } from '@rneui/themed'
 
-interface ButtonProps extends RneCustomButtonProps {
-  variant?: 'primary' | 'secondary' | 'tertiary'
+export interface ButtonProps extends RneCustomButtonProps {
+  variant?: 'primary' | 'secondary'
   fullWidth?: boolean
 }
 
@@ -14,12 +14,7 @@ const Button: FC<ButtonProps> = ({
   fullWidth,
   ...rest
 }) => {
-  const styles = useStyles({ size, variant, fullWidth })
-
-  // const labelStyle = {
-  //   marginVertical: compact ? theme.spacing(2) : theme.spacing(3.5),
-  //   marginHorizontal: compact ? theme.spacing(3) : theme.spacing(6),
-  // }
+  const styles = useStyles({ size, fullWidth })
 
   // const outlinedButtonProps = {
   //   textColor:
@@ -44,16 +39,13 @@ const Button: FC<ButtonProps> = ({
 
 export default Button
 
-const useStyles = makeStyles(
-  (theme, { size, variant, fullWidth }: ButtonProps) => ({
-    root: {
-      paddingHorizontal: theme.spacing[size || 'md'],
-      paddingVertical: theme.spacing[size || 'md'],
-      flexGrow: fullWidth ? 1 : undefined,
-    },
-    titleStyle: {
-      color:
-        variant === 'tertiary' ? theme.colors.neutral80 : theme.colors.white,
-    },
-  })
-)
+const useStyles = makeStyles((theme, { size, fullWidth }: ButtonProps) => ({
+  root: {
+    paddingHorizontal: theme.spacing[size || 'md'],
+    paddingVertical: theme.spacing[size || 'md'],
+    flexGrow: fullWidth ? 1 : undefined,
+  },
+  titleStyle: {
+    color: theme.colors.white,
+  },
+}))

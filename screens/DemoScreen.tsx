@@ -44,31 +44,6 @@ const DemoScreen: FC = () => {
           {/* <Button style={styles.button} variant='secondary'>
             Text Secondary
           </Button> */}
-          <Button
-            title='Solid Tertiary'
-            style={styles.button}
-            variant='tertiary'
-            fullWidth
-          />
-          {/* <Button style={styles.button} mode='outlined' variant='tertiary'>
-            Outlined Tertiary
-          </Button> */}
-          {/* <Button
-            style={styles.button}
-            mode='contained'
-            variant='tertiary'
-            compact
-          >
-            Contained Tertiary
-          </Button>
-          <Button
-            style={styles.button}
-            mode='outlined'
-            variant='tertiary'
-            compact
-          >
-            Outlined Tertiary
-          </Button> */}
         </View>
       </Container>
     </ScreenWrapper>

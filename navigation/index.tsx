@@ -16,11 +16,12 @@ const Navigation = () => {
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
+          tabBarStyle: { backgroundColor: theme.colors.backgroundInverse },
           // tabBarShowLabel: false,
           // tabBarLabelStyle: styles.tabBarLabel,
-          // TODO Color from theme
-          tabBarInactiveTintColor: '#B3B1AB',
-          tabBarActiveTintColor: theme.colors.primary,
+          tabBarInactiveTintColor: theme.colors.neutral60,
+          // tabBarInactiveTintColor: theme.colors.background,
+          tabBarActiveTintColor: theme.colors.textInverse,
           // tabBarStyle: styles.tabBar,
         }}
       >

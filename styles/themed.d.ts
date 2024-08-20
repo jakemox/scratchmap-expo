@@ -2,6 +2,10 @@ import '@rneui/themed'
 
 declare module '@rneui/themed' {
   export interface Colors {
+    text: string
+    textInverse: string
+    backgroundInverse: string
+    tertiary: string
     neutral0: string
     neutral10: string
     neutral20: string
@@ -13,10 +17,12 @@ declare module '@rneui/themed' {
     neutral80: string
     neutral90: string
     neutral100: string
-    tertiary: string
+    lightGreen: string
+    red: string
     blue: string
     lightBlue: string
     orange: string
+    lightOrange: string
     pink: string
     violet: string
     yellow: string

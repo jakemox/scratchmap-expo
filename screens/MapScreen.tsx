@@ -6,7 +6,7 @@ import ScratchMap from '../components/ScratchMap'
 const MapScreen: FC = () => {
   return (
     <View style={styles.rootContainer}>
-      <StatusBar style='light' />
+      <StatusBar style='dark' />
       <View style={styles.container}>
         <ScratchMap />
       </View>

@@ -1,10 +1,4 @@
-import {
-  ScrollView,
-  ScrollViewProps,
-  StyleProp,
-  View,
-  ViewStyle,
-} from 'react-native'
+import { ScrollView, ScrollViewProps, StyleProp, View, ViewStyle } from 'react-native'
 import { makeStyles } from '@rneui/themed'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import type { EdgeInsets } from 'react-native-safe-area-context'
@@ -29,7 +23,7 @@ const ScreenWrapper = ({
       contentContainerStyle={contentContainerStyle}
       alwaysBounceVertical={false}
       showsVerticalScrollIndicator={false}
-      style={styles.root}
+      style={[styles.root, style]}
       {...rest}
     >
       {children}

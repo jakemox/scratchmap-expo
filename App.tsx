@@ -19,7 +19,7 @@ import Navigation from './navigation'
 import { ThemeProvider } from '@rneui/themed'
 
 export default function App() {
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Jost_600SemiBold,
     Raleway_400Regular,
     Raleway_500Medium,

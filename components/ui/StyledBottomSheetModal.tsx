@@ -31,6 +31,8 @@ const StyledBottomSheetModal = forwardRef<
   )
 })
 
+StyledBottomSheetModal.displayName = 'StyledBottomSheetModal'
+
 export default StyledBottomSheetModal
 
 const useStyles = makeStyles((theme, insets: EdgeInsets) => ({
@@ -51,7 +53,6 @@ const useStyles = makeStyles((theme, insets: EdgeInsets) => ({
     display: 'flex',
   },
   container: {
-    paddingBottom:
-      insets.bottom > 0 ? insets.bottom + theme.spacing.md : theme.spacing.xl,
+    paddingBottom: insets.bottom > 0 ? insets.bottom + theme.spacing.md : theme.spacing.xl,
   },
 }))

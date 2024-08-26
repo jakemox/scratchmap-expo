@@ -21,7 +21,7 @@ const Navigation = () => {
           // tabBarLabelStyle: styles.tabBarLabel,
           tabBarInactiveTintColor: theme.colors.neutral60,
           // tabBarInactiveTintColor: theme.colors.background,
-          tabBarActiveTintColor: theme.colors.textInverse,
+          tabBarActiveTintColor: theme.colors.textOnBackground.inverse,
           // tabBarStyle: styles.tabBar,
         }}
       >

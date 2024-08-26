@@ -12,7 +12,7 @@ import { Text } from '@rneui/themed'
 const DemoScreen: FC = () => {
   return (
     <ScreenWrapper>
-      <StatusBar style='dark' />
+      <StatusBar style="dark" />
       <Container style={styles.rootContainer}>
         {/* <Flag id={'JP'} width={100} height={100} /> */}
         {/* <Svg width={20} height={20} viewBox='0 0 20 20'>
@@ -24,20 +24,12 @@ const DemoScreen: FC = () => {
         <Text h4>Heading 4</Text>
         <Text>Body</Text>
         <View style={styles.row}>
-          <Button
-            title='Solid Primary'
-            style={styles.button}
-            variant='primary'
-          />
+          <Button title="Solid Primary" style={styles.button} color="primary" />
           {/* <Button style={styles.button}>Text Primary</Button> */}
           {/* <Button style={styles.button}>
             Outlined Primary
           </Button> */}
-          <Button
-            title='Solid Secondary'
-            style={styles.button}
-            variant='secondary'
-          />
+          <Button title="Solid Secondary" style={styles.button} color="secondary" />
           {/* <Button style={styles.button} mode='outlined' variant='secondary'>
             Outlined Secondary
           </Button> */}

@@ -2,23 +2,26 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { FontAwesome5 } from '@expo/vector-icons'
 
-import { theme } from '../styles/theme'
-
 import MapScreen from '../screens/MapScreen'
 import DemoScreen from '../screens/DemoScreen'
+import { useTheme } from '@rneui/themed'
 
 const Tab = createBottomTabNavigator()
 
 const Navigation = () => {
+  const { theme } = useTheme()
+
   return (
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
+          tabBarStyle: { backgroundColor: theme.colors.backgroundInverse },
           // tabBarShowLabel: false,
           // tabBarLabelStyle: styles.tabBarLabel,
-          tabBarInactiveTintColor: '#B3B1AB',
-          tabBarActiveTintColor: theme.colors.primary,
+          tabBarInactiveTintColor: theme.colors.neutral60,
+          // tabBarInactiveTintColor: theme.colors.background,
+          tabBarActiveTintColor: theme.colors.textOnBackground.inverse,
           // tabBarStyle: styles.tabBar,
         }}
       >

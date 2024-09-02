@@ -1,0 +1,5 @@
+- Move all styles out of components to StyleSheets
+- Make camera work on map
+- Set up DB
+- Authentication
+- Dark mode

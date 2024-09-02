@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { PaperProvider } from 'react-native-paper'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 
@@ -17,9 +16,10 @@ import {
 import { theme } from './styles/theme'
 
 import Navigation from './navigation'
+import { ThemeProvider } from '@rneui/themed'
 
 export default function App() {
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Jost_600SemiBold,
     Raleway_400Regular,
     Raleway_500Medium,
@@ -33,13 +33,13 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <PaperProvider theme={theme}>
+      <ThemeProvider theme={theme}>
         <GestureHandlerRootView style={styles.rootContainer}>
           <BottomSheetModalProvider>
             <Navigation />
           </BottomSheetModalProvider>
         </GestureHandlerRootView>
-      </PaperProvider>
+      </ThemeProvider>
     </SafeAreaProvider>
   )
 }

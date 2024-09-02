@@ -1,71 +1,130 @@
-import { DefaultTheme, MD3Theme, useTheme } from 'react-native-paper'
+import { createTheme } from '@rneui/themed'
+import type { CreateThemeOptions } from '@rneui/themed'
+import { commonColors, fonts, colors } from './base'
 
-interface Theme extends MD3Theme {
-  spacing: (factor: number) => number
-}
-
-export const theme: Theme = {
-  ...DefaultTheme,
-  spacing: (factor: number) => 0.25 * factor * 16,
-  roundness: 1,
-  colors: {
-    ...DefaultTheme.colors,
-    surface: '#ffffff',
-    onSurface: '#42413F',
-    background: '#ffffff',
-    onBackground: '#42413F',
-    primary: '#1c6e70',
-    onPrimary: '#ffffff',
-    secondary: '#d9734e',
-    onSecondary: '#ffffff',
-    tertiary: '#fbd1d8',
-    onTertiary: '#42413F',
-  },
-  fonts: {
-    ...DefaultTheme.fonts,
-    displayLarge: {
-      ...DefaultTheme.fonts.displayLarge,
-      fontFamily: 'Jost_600SemiBold',
-      fontSize: 60,
-      lineHeight: 84,
+export const theme: CreateThemeOptions = createTheme({
+  lightColors: {
+    primary: colors.orange.dark,
+    secondary: colors.green.dark,
+    error: colors.red.dark,
+    info: colors.blue.mid,
+    success: colors.green.mid,
+    warning: colors.orange.mid,
+    text: commonColors.neutral80,
+    textOnBackground: {
+      primary: commonColors.neutral0,
+      secondary: commonColors.neutral0,
+      success: commonColors.neutral0,
+      neutral: commonColors.neutral80,
+      inverse: commonColors.neutral20,
     },
-    displayMedium: {
-      ...DefaultTheme.fonts.displayMedium,
-      fontFamily: 'Jost_600SemiBold',
-      fontSize: 50,
-      lineHeight: 70,
-    },
-    displaySmall: {
-      ...DefaultTheme.fonts.displaySmall,
-      fontFamily: 'Jost_600SemiBold',
-      fontSize: 40,
-      lineHeight: 56,
-    },
-    headlineLarge: {
-      ...DefaultTheme.fonts.headlineLarge,
-      fontFamily: 'Jost_600SemiBold',
-      fontSize: 35,
-      lineHeight: 49,
-    },
-    headlineMedium: {
-      ...DefaultTheme.fonts.headlineMedium,
-      fontFamily: 'Jost_600SemiBold',
-      fontSize: 30,
-      lineHeight: 42,
-    },
-    headlineSmall: {
-      ...DefaultTheme.fonts.headlineSmall,
-      fontFamily: 'Jost_600SemiBold',
-      fontSize: 25,
-      lineHeight: 35,
-    },
-    labelLarge: {
-      ...DefaultTheme.fonts.labelLarge,
-      fontFamily: 'Raleway_600SemiBold',
-      // lineHeight: 16,
-      fontSize: 16,
+    background: commonColors.neutral10,
+    backgroundInverse: commonColors.neutral90,
+    neutral0: commonColors.neutral0,
+    neutral10: commonColors.neutral10,
+    neutral20: commonColors.neutral20,
+    neutral30: commonColors.neutral30,
+    neutral40: commonColors.neutral40,
+    neutral50: commonColors.neutral50,
+    neutral60: commonColors.neutral60,
+    neutral70: commonColors.neutral70,
+    neutral80: commonColors.neutral80,
+    neutral90: commonColors.neutral90,
+    neutral100: commonColors.neutral100,
+    decorative: {
+      blue: colors.blue.dark,
+      blush: colors.red.light,
+      coral: colors.red.mid,
+      lightBlue: colors.blue.light,
+      lightLilac: colors.purple.light,
+      lilac: colors.purple.mid,
+      mint: colors.green.light,
+      orange: colors.orange.mid,
+      yellow: colors.orange.light,
+      violet: colors.purple.dark,
     },
   },
-}
-
-export const useAppTheme = () => useTheme<Theme>()
+  darkColors: {
+    primary: colors.orange.dark,
+    secondary: colors.green.dark,
+    success: colors.green.light,
+    warning: colors.orange.mid,
+    error: colors.red.dark,
+    text: commonColors.neutral20,
+    // TODO Invert
+    textOnBackground: {
+      primary: commonColors.neutral0,
+      secondary: commonColors.neutral0,
+      neutral: commonColors.neutral80,
+      inverse: commonColors.neutral20,
+    },
+    background: commonColors.neutral90,
+    backgroundInverse: commonColors.neutral10,
+    neutral0: commonColors.neutral100,
+    neutral10: commonColors.neutral90,
+    neutral20: commonColors.neutral80,
+    neutral30: commonColors.neutral70,
+    neutral40: commonColors.neutral60,
+    neutral50: commonColors.neutral50,
+    neutral60: commonColors.neutral40,
+    neutral70: commonColors.neutral30,
+    neutral80: commonColors.neutral20,
+    neutral90: commonColors.neutral10,
+    neutral100: commonColors.neutral0,
+  },
+  // TODO Remove/update when adding dark mode functionality
+  mode: 'light',
+  spacing: {
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
+  },
+  components: {
+    Text: {
+      h1Style: {
+        fontFamily: fonts.primary,
+        fontSize: 48,
+        lineHeight: 60,
+        textTransform: 'uppercase',
+        includeFontPadding: false,
+      },
+      h2Style: {
+        fontFamily: fonts.primary,
+        fontSize: 40,
+        lineHeight: 50,
+        textTransform: 'uppercase',
+        includeFontPadding: false,
+      },
+      h3Style: {
+        fontFamily: fonts.primary,
+        fontSize: 32,
+        lineHeight: 40,
+        textTransform: 'uppercase',
+        includeFontPadding: false,
+      },
+      h4Style: {
+        fontFamily: fonts.primary,
+        fontSize: 24,
+        lineHeight: 30,
+        textTransform: 'uppercase',
+        includeFontPadding: false,
+      },
+    },
+    Button: {
+      radius: 0,
+      titleStyle: {
+        fontFamily: fonts.primary,
+        paddingVertical: 0,
+      },
+      icon: {
+        size: 26.2,
+      },
+      activeOpacity: 0.5,
+    },
+    Icon: {
+      type: 'material',
+    },
+  },
+})

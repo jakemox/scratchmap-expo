@@ -1,67 +1,45 @@
-import { FC } from 'react'
-import {
-  Button as PaperButton,
-  ButtonProps as PaperButtonProps,
-} from 'react-native-paper'
-import { StyleSheet } from 'react-native'
-import { useAppTheme } from '../../styles/theme'
+import type { FC } from 'react'
+import { makeStyles, useTheme, Button as RneButton } from '@rneui/themed'
+import type { IconProps } from '@rneui/base'
+import type { ButtonProps as RneCustomButtonProps } from '@rneui/themed'
 
-interface ButtonProps extends PaperButtonProps {
-  mode?: 'text' | 'contained' | 'outlined' | 'elevated'
-  variant?: 'primary' | 'secondary' | 'tertiary'
+enum ThemeColor {
+  primary = 'primary',
+  secondary = 'secondary',
+  success = 'success',
+  neutral = 'neutral30',
+}
+
+export interface ButtonProps extends RneCustomButtonProps {
+  color?: 'primary' | 'secondary' | 'success' | 'neutral'
+  variant?: 'solid' | 'outline'
+  iconProps?: IconProps
   fullWidth?: boolean
 }
 
 const Button: FC<ButtonProps> = ({
-  variant = 'primary',
-  mode = 'text',
+  color = 'primary',
+  variant = 'solid',
+  size,
+  iconProps,
   fullWidth,
-  ...attr
+  ...rest
 }) => {
-  const { compact, style, ...rest } = attr
-  const theme = useAppTheme()
+  const themeColor = ThemeColor[color]
 
-  // TODO: Move to styles
-  const labelStyle = {
-    marginVertical: compact ? theme.spacing(2) : theme.spacing(3.5),
-    marginHorizontal: compact ? theme.spacing(3) : theme.spacing(6), //TODO Make it so that theme styles can be used in StyleSheet
-  }
+  const styles = useStyles({ themeColor, size, fullWidth })
+  const { theme } = useTheme()
 
-  const textButtonProps = {
-    textColor: theme.colors[variant],
-    style,
-  }
-
-  const containedButtonProps = {
-    buttonColor: theme.colors[variant],
-    textColor:
-      variant === 'tertiary' ? theme.colors.onSurface : theme.colors.onPrimary,
-    style: [{ flex: fullWidth ? 1 : undefined }, style],
-  }
-
-  const outlinedButtonProps = {
-    textColor:
-      variant === 'tertiary' ? theme.colors.onSurface : theme.colors[variant],
-    style: [
-      styles.outlinedButton,
-      { borderColor: theme.colors[variant], flex: fullWidth ? 1 : undefined },
-      style,
-    ],
-  }
-
-  const buttonProps =
-    mode && ['contained', 'elevated'].includes(mode)
-      ? containedButtonProps
-      : mode === 'outlined'
-      ? outlinedButtonProps
-      : textButtonProps
+  const textColor = variant === 'solid' ? theme.colors.textOnBackground[color] : theme.colors.text
 
   return (
-    <PaperButton
-      mode={mode}
-      compact={compact}
-      labelStyle={labelStyle}
-      {...buttonProps}
+    <RneButton
+      size={size}
+      color={themeColor}
+      type={variant}
+      buttonStyle={[styles.root, variant === 'outline' && styles.outlineStyles]}
+      titleStyle={{ color: textColor }}
+      icon={iconProps && { iconStyle: { color: textColor }, ...iconProps }}
       {...rest}
     />
   )
@@ -69,8 +47,20 @@ const Button: FC<ButtonProps> = ({
 
 export default Button
 
-const styles = StyleSheet.create({
-  outlinedButton: {
-    borderWidth: 2,
+interface ButtonStyleProps {
+  themeColor: ThemeColor
+  size: ButtonProps['size']
+  fullWidth?: boolean
+}
+
+const useStyles = makeStyles((theme, { themeColor, size, fullWidth }: ButtonStyleProps) => ({
+  root: {
+    paddingHorizontal: theme.spacing[size || 'md'],
+    paddingVertical: theme.spacing[size || 'md'],
+    flexGrow: fullWidth ? 1 : undefined,
   },
-})
+  outlineStyles: {
+    borderWidth: 2,
+    borderColor: theme.colors[themeColor],
+  },
+}))

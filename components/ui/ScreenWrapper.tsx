@@ -1,13 +1,7 @@
-import {
-  ScrollView,
-  ScrollViewProps,
-  StyleProp,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from 'react-native'
-import { useAppTheme } from '../../styles/theme'
+import { ScrollView, ScrollViewProps, StyleProp, View, ViewStyle } from 'react-native'
+import { makeStyles } from '@rneui/themed'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import type { EdgeInsets } from 'react-native-safe-area-context'
 
 interface ScreenWrapperProps extends ScrollViewProps {
   withScrollView?: boolean
@@ -20,42 +14,34 @@ const ScreenWrapper = ({
   children,
   ...attr
 }: ScreenWrapperProps) => {
-  const { style, ...rest } = attr
-  const theme = useAppTheme()
   const insets = useSafeAreaInsets()
-  const containerStyle = [
-    styles.container,
-    {
-      paddingTop: insets.top,
-      paddingBottom: insets.bottom,
-      paddingLeft: insets.left,
-      paddingRight: insets.left,
-      backgroundColor: theme.colors.background,
-    },
-  ]
+  const styles = useStyles(insets)
+  const { style, ...rest } = attr
 
   return withScrollView ? (
     <ScrollView
-      {...rest}
       contentContainerStyle={contentContainerStyle}
       alwaysBounceVertical={false}
       showsVerticalScrollIndicator={false}
-      style={[containerStyle, style]}
+      style={[styles.root, style]}
+      {...rest}
     >
       {children}
     </ScrollView>
   ) : (
-    <View style={[containerStyle, style]}>{children}</View>
+    <View style={styles.root}>{children}</View>
   )
 }
 
 export default ScreenWrapper
 
-const styles = StyleSheet.create({
-  rootScreen: {
+const useStyles = makeStyles((theme, insets: EdgeInsets) => ({
+  root: {
     flex: 1,
+    backgroundColor: theme.colors.background,
+    paddingTop: insets.top,
+    paddingBottom: insets.bottom,
+    paddingLeft: insets.left,
+    paddingRight: insets.left,
   },
-  container: {
-    flex: 1,
-  },
-})
+}))

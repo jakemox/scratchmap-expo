@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
-import { StyleSheet } from 'react-native'
-
+import type { FC } from 'react'
 import Mapbox, {
+  BackgroundLayer,
   FillLayer,
   MapView,
   VectorSource,
@@ -9,23 +9,31 @@ import Mapbox, {
   Camera,
 } from '@rnmapbox/maps'
 import { OnPressEvent } from '@rnmapbox/maps/lib/typescript/types/OnPressEvent'
-import CountryFlag from 'react-native-country-flag'
+// import CountryFlag from 'react-native-country-flag'
 
-import StyledBottomSheetModal from './ui/StyledBottomSheetModal'
-import Typography from './ui/Typography'
-import Button from './ui/Button'
-import Grid from './ui/grid/Grid'
-import Item from './ui/grid/Item'
 import type { BottomSheetModal } from '@gorhom/bottom-sheet'
+import { useTheme } from '@rneui/themed'
+import ScratchMapBottomSheet from './ScratchMapBottomSheet'
+import { StyleSheet } from 'react-native'
+
+interface Country {
+  name: string
+  code: string
+}
 
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || null)
 
-const DEFAULT_SELECTED_COUNTRY = { name: '', code: '' }
+const DEFAULT_SELECTED_COUNTRY: Country = {
+  name: '',
+  code: '',
+}
 
-const ScratchMap = () => {
-  const [selectedCountry, setSelectedCountry] = useState(
-    DEFAULT_SELECTED_COUNTRY
-  )
+const ScratchMap: FC = () => {
+  const {
+    theme: { colors },
+  } = useTheme()
+
+  const [selectedCountry, setSelectedCountry] = useState<Country>(DEFAULT_SELECTED_COUNTRY)
   const [visitedCountries, setVisitedCountries] = useState<string[]>([''])
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
@@ -49,9 +57,7 @@ const ScratchMap = () => {
   const countryVisitedHandler = () => {
     setVisitedCountries((prevVisitedCountries: string[]) => {
       if (prevVisitedCountries.includes(selectedCountry.code)) {
-        return prevVisitedCountries.filter(
-          (country) => country !== selectedCountry.code
-        )
+        return prevVisitedCountries.filter((country) => country !== selectedCountry.code)
       } else {
         return [...prevVisitedCountries, selectedCountry.code]
       }
@@ -60,9 +66,34 @@ const ScratchMap = () => {
 
   return (
     <>
+      <ScratchMapBottomSheet
+        ref={bottomSheetModalRef}
+        heading={selectedCountry.name}
+        // TODO Update onPress
+        buttons={[
+          {
+            title: 'Visited',
+            // iconProps: {
+            //   name: 'where-to-vote',
+            // },
+            color: visitedCountries.includes(selectedCountry.code) ? 'success' : 'neutral',
+            fullWidth: true,
+            onPress: countryVisitedHandler,
+          },
+          {
+            title: 'Explore',
+            // iconProps: {
+            //   name: 'public',
+            // },
+            color: 'primary',
+            fullWidth: true,
+            onPress: countryVisitedHandler,
+          },
+        ]}
+      />
       <MapView
         style={styles.map}
-        styleURL='mapbox://styles/jakemox99/cli76zhe402re01pg4ur61fx4'
+        styleURL="mapbox://styles/jakemox99/cli76zhe402re01pg4ur61fx4"
         rotateEnabled={false}
         scaleBarEnabled={false}
         zoomEnabled
@@ -70,103 +101,83 @@ const ScratchMap = () => {
       >
         <Camera bounds={{ ne: [11.64, -17.93], sw: [24.08, -4.44] }} />
         <VectorSource
-          id='countrySource'
-          url='mapbox://mapbox.country-boundaries-v1'
+          id="countrySource"
+          url="mapbox://mapbox.country-boundaries-v1"
           onPress={countryPressHandler}
         >
+          <BackgroundLayer
+            id="backgroundLayer"
+            layerIndex={0}
+            style={{ backgroundColor: colors.decorative.lightBlue }}
+          />
           <FillLayer
-            id='fillLayer'
-            sourceID='countrySource'
-            sourceLayerID='country_boundaries'
+            id="fillLayer"
+            sourceID="countrySource"
+            sourceLayerID="country_boundaries"
+            layerIndex={1}
+            style={{ fillColor: colors.neutral20 }}
+          />
+          <FillLayer
+            id="visitedFillLayer"
+            sourceID="countrySource"
+            sourceLayerID="country_boundaries"
             filter={[
               'all',
               ['==', ['get', 'disputed'], 'false'],
-              [
-                'any',
-                ['==', 'all', ['get', 'worldview']],
-                ['in', 'US', ['get', 'worldview']],
-              ],
+              ['any', ['==', 'all', ['get', 'worldview']], ['in', 'US', ['get', 'worldview']]],
             ]}
-            belowLayerID='country-labels-md'
-            // TODO Use theme colors
+            belowLayerID="country-labels-md"
             style={{
               fillColor: [
                 'step',
                 ['get', 'color_group'],
-                '#ebbe84',
+                colors.decorative.yellow,
                 2,
-                '#fdecb3',
+                colors.decorative.mint,
                 3,
-                '#669db3',
+                colors.decorative.blush,
                 4,
-                '#b5d5d7',
+                colors.decorative.lightLilac,
                 5,
-                '#cdafd5',
+                colors.decorative.mint,
                 6,
-                '#fbd1d8',
+                colors.decorative.blush,
                 7,
-                '#ebbe84',
+                colors.decorative.yellow,
               ],
-              fillOpacity: [
-                'match',
-                ['get', 'iso_3166_1'],
-                visitedCountries,
-                1,
-                0,
-              ],
+              fillOpacity: ['match', ['get', 'iso_3166_1'], visitedCountries, 1, 0],
             }}
           />
           <FillLayer
-            id='highlightFillLayer'
-            sourceID='countrySource'
-            sourceLayerID='country_boundaries'
+            id="highlightFillLayer"
+            sourceID="countrySource"
+            sourceLayerID="country_boundaries"
             filter={[
               'all',
               ['==', ['get', 'disputed'], 'false'],
-              [
-                'any',
-                ['==', 'all', ['get', 'worldview']],
-                ['in', 'US', ['get', 'worldview']],
-              ],
+              ['any', ['==', 'all', ['get', 'worldview']], ['in', 'US', ['get', 'worldview']]],
             ]}
-            belowLayerID='country-labels-md'
-            // TODO Use theme colors
+            belowLayerID="country-labels-md"
             style={{
-              fillColor: '#332014',
-              fillOpacity: [
-                'match',
-                ['get', 'iso_3166_1'],
-                selectedCountry.code,
-                0.1,
-                0,
-              ],
+              fillColor: colors.text,
+              fillOpacity: ['match', ['get', 'iso_3166_1'], selectedCountry.code, 0.1, 0],
             }}
           />
           <LineLayer
-            id='lineLayer'
-            sourceID='countrySource'
-            sourceLayerID='country_boundaries'
-            belowLayerID='country-labels-md'
+            id="lineLayer"
+            sourceID="countrySource"
+            sourceLayerID="country_boundaries"
+            belowLayerID="country-labels-md"
             filter={[
               'all',
-              [
-                'any',
-                ['==', 'all', ['get', 'worldview']],
-                ['in', 'US', ['get', 'worldview']],
-              ],
+              ['any', ['==', 'all', ['get', 'worldview']], ['in', 'US', ['get', 'worldview']]],
             ]}
             style={{
-              lineColor: '#332014',
+              lineColor: colors.text,
               lineWidth: [
                 'case',
-                [
-                  'match',
-                  ['get', 'iso_3166_1'],
-                  selectedCountry.code,
-                  true,
-                  false,
-                ],
-                3,
+                ['match', ['get', 'iso_3166_1'], selectedCountry.code, true, false],
+                2.5,
                 ['match', ['get', 'iso_3166_1'], visitedCountries, true, false],
                 1.5,
                 0,
@@ -176,39 +187,6 @@ const ScratchMap = () => {
           {/* TODO Zoom into country on click */}
         </VectorSource>
       </MapView>
-      <StyledBottomSheetModal
-        ref={bottomSheetModalRef}
-        index={0}
-        enableDynamicSizing
-      >
-        <Grid>
-          <Item style={styles.countryName}>
-            <CountryFlag
-              isoCode={selectedCountry.code}
-              size={30}
-              style={styles.countryFlag}
-            />
-            <Typography variant='headlineMedium' style={styles.countryNameText}>
-              {selectedCountry.name}
-            </Typography>
-          </Item>
-          <Item cols={6}>
-            <Button mode='contained' variant='tertiary' fullWidth>
-              Explore
-            </Button>
-          </Item>
-          <Item cols={6}>
-            <Button
-              mode='contained'
-              variant='secondary'
-              fullWidth
-              onPress={countryVisitedHandler}
-            >
-              Visited
-            </Button>
-          </Item>
-        </Grid>
-      </StyledBottomSheetModal>
     </>
   )
 }
@@ -218,18 +196,5 @@ export default ScratchMap
 const styles = StyleSheet.create({
   map: {
     flex: 1,
-  },
-  countryName: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    // TODO Theme.spacer
-    marginBottom: 24,
-  },
-  countryFlag: {
-    marginRight: 12,
-    borderRadius: 4,
-  },
-  countryNameText: {
-    marginBottom: 0,
   },
 })

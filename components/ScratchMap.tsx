@@ -66,6 +66,31 @@ const ScratchMap: FC = () => {
 
   return (
     <>
+      <ScratchMapBottomSheet
+        ref={bottomSheetModalRef}
+        heading={selectedCountry.name}
+        // TODO Update onPress
+        buttons={[
+          {
+            title: 'Visited',
+            // iconProps: {
+            //   name: 'where-to-vote',
+            // },
+            color: visitedCountries.includes(selectedCountry.code) ? 'success' : 'neutral',
+            fullWidth: true,
+            onPress: countryVisitedHandler,
+          },
+          {
+            title: 'Explore',
+            // iconProps: {
+            //   name: 'public',
+            // },
+            color: 'primary',
+            fullWidth: true,
+            onPress: countryVisitedHandler,
+          },
+        ]}
+      />
       <MapView
         style={styles.map}
         styleURL="mapbox://styles/jakemox99/cli76zhe402re01pg4ur61fx4"
@@ -162,31 +187,6 @@ const ScratchMap: FC = () => {
           {/* TODO Zoom into country on click */}
         </VectorSource>
       </MapView>
-      <ScratchMapBottomSheet
-        ref={bottomSheetModalRef}
-        heading={selectedCountry.name}
-        // TODO Update onPress
-        buttons={[
-          {
-            title: 'Visited',
-            // iconProps: {
-            //   name: 'where-to-vote',
-            // },
-            color: visitedCountries.includes(selectedCountry.code) ? 'success' : 'neutral',
-            fullWidth: true,
-            onPress: countryVisitedHandler,
-          },
-          {
-            title: 'Explore',
-            // iconProps: {
-            //   name: 'public',
-            // },
-            color: 'primary',
-            fullWidth: true,
-            onPress: countryVisitedHandler,
-          },
-        ]}
-      />
     </>
   )
 }

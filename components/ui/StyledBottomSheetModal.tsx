@@ -1,12 +1,12 @@
 import { PropsWithChildren, forwardRef } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import type { EdgeInsets } from 'react-native-safe-area-context'
+import { makeStyles } from '@rneui/themed'
 
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet'
 import type { BottomSheetModalProps } from '@gorhom/bottom-sheet'
 
 import Container from './Container'
-import { makeStyles } from '@rneui/themed'
 
 const StyledBottomSheetModal = forwardRef<
   BottomSheetModal,

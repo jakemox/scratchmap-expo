@@ -27,13 +27,7 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      [
-        "@rnmapbox/maps",
-        {
-          "RNMapboxMapsImpl": "mapbox",
-          "RNMapboxMapsDownloadToken": "sk.eyJ1IjoiamFrZW1veDk5IiwiYSI6ImNsaTl4M3k3dzI2b2Eza21sODN1anNtdWsifQ.ZC1nFpF4w_go3ZCMvemG3w"
-        }
-      ]
+      "expo-font"
     ],
     "extra": {
       "eas": {

@@ -8,7 +8,7 @@ import Mapbox, {
   LineLayer,
   Camera,
 } from '@rnmapbox/maps'
-import { OnPressEvent } from '@rnmapbox/maps/lib/typescript/types/OnPressEvent'
+import type { OnPressEvent } from '@rnmapbox/maps/lib/typescript/src/types/OnPressEvent'
 // import CountryFlag from 'react-native-country-flag'
 
 import type { BottomSheetModal } from '@gorhom/bottom-sheet'

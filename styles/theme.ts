@@ -85,6 +85,7 @@ export const theme: CreateThemeOptions = createTheme({
     Text: {
       h1Style: {
         fontFamily: fonts.primary,
+        fontWeight: 600,
         fontSize: 48,
         lineHeight: 60,
         textTransform: 'uppercase',
@@ -92,6 +93,7 @@ export const theme: CreateThemeOptions = createTheme({
       },
       h2Style: {
         fontFamily: fonts.primary,
+        fontWeight: 600,
         fontSize: 40,
         lineHeight: 50,
         textTransform: 'uppercase',
@@ -99,6 +101,7 @@ export const theme: CreateThemeOptions = createTheme({
       },
       h3Style: {
         fontFamily: fonts.primary,
+        fontWeight: 600,
         fontSize: 32,
         lineHeight: 40,
         textTransform: 'uppercase',
@@ -106,6 +109,7 @@ export const theme: CreateThemeOptions = createTheme({
       },
       h4Style: {
         fontFamily: fonts.primary,
+        fontWeight: 600,
         fontSize: 24,
         lineHeight: 30,
         textTransform: 'uppercase',
@@ -116,6 +120,7 @@ export const theme: CreateThemeOptions = createTheme({
       radius: 0,
       titleStyle: {
         fontFamily: fonts.primary,
+        fontWeight: 600,
         paddingVertical: 0,
       },
       icon: {

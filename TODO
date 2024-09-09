@@ -1,5 +1,3 @@
-- Make fonts work on Android
-- Create hook for bottom drawer
 - Move all styles out of components to StyleSheets
 - Make camera work on map
 - Set up DB

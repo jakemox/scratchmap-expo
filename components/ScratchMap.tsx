@@ -1,5 +1,8 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
+import { StyleSheet } from 'react-native'
 import type { FC } from 'react'
+
+import { useTheme } from '@rneui/themed'
 import Mapbox, {
   BackgroundLayer,
   FillLayer,
@@ -11,10 +14,9 @@ import Mapbox, {
 import type { OnPressEvent } from '@rnmapbox/maps/lib/typescript/src/types/OnPressEvent'
 // import CountryFlag from 'react-native-country-flag'
 
-import type { BottomSheetModal } from '@gorhom/bottom-sheet'
-import { useTheme } from '@rneui/themed'
-import ScratchMapBottomSheet from './ScratchMapBottomSheet'
-import { StyleSheet } from 'react-native'
+import { useBottomSheetModal } from '../hooks/useBottomSheetModal'
+import StyledBottomSheetModal from './ui/StyledBottomSheetModal'
+import ScratchMapBottomSheetContent from './ScratchMapBottomSheetContent'
 
 interface Country {
   name: string
@@ -32,25 +34,20 @@ const ScratchMap: FC = () => {
   const {
     theme: { colors },
   } = useTheme()
+  const { bottomSheetModalRef, presentModal, closeModal } = useBottomSheetModal()
 
   const [selectedCountry, setSelectedCountry] = useState<Country>(DEFAULT_SELECTED_COUNTRY)
   const [visitedCountries, setVisitedCountries] = useState<string[]>([''])
 
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
-
-  const presentModalHandler = useCallback(() => {
-    bottomSheetModalRef.current?.present()
-  }, [])
-
   const closeModalHandler = useCallback(() => {
-    bottomSheetModalRef.current?.close()
+    closeModal()
     setSelectedCountry(DEFAULT_SELECTED_COUNTRY)
   }, [])
 
   const countryPressHandler = (event: OnPressEvent) => {
     const { name_en, iso_3166_1 } = event.features[0].properties || {}
     setSelectedCountry({ name: name_en, code: iso_3166_1 })
-    presentModalHandler()
+    presentModal()
     console.log(event.features[0])
   }
 
@@ -66,34 +63,35 @@ const ScratchMap: FC = () => {
 
   return (
     <>
-      <ScratchMapBottomSheet
-        ref={bottomSheetModalRef}
-        heading={selectedCountry.name}
-        // TODO Update onPress
-        buttons={[
-          {
-            title: 'Visited',
-            // iconProps: {
-            //   name: 'where-to-vote',
-            // },
-            color: visitedCountries.includes(selectedCountry.code) ? 'success' : 'neutral',
-            fullWidth: true,
-            onPress: countryVisitedHandler,
-          },
-          {
-            title: 'Explore',
-            // iconProps: {
-            //   name: 'public',
-            // },
-            color: 'primary',
-            fullWidth: true,
-            onPress: countryVisitedHandler,
-          },
-        ]}
-      />
+      <StyledBottomSheetModal ref={bottomSheetModalRef} index={0} enableDynamicSizing>
+        <ScratchMapBottomSheetContent
+          heading={selectedCountry.name}
+          // TODO Update onPress
+          buttons={[
+            {
+              title: 'Visited',
+              // iconProps: {
+              //   name: 'where-to-vote',
+              // },
+              color: visitedCountries.includes(selectedCountry.code) ? 'success' : 'neutral',
+              fullWidth: true,
+              onPress: countryVisitedHandler,
+            },
+            {
+              title: 'Explore',
+              // iconProps: {
+              //   name: 'public',
+              // },
+              color: 'primary',
+              fullWidth: true,
+              onPress: countryVisitedHandler,
+            },
+          ]}
+        />
+      </StyledBottomSheetModal>
       <MapView
         style={styles.map}
-        styleURL="mapbox://styles/jakemox99/cli76zhe402re01pg4ur61fx4"
+        styleURL={process.env.EXPO_PUBLIC_MAPBOX_STYLE_URL}
         rotateEnabled={false}
         scaleBarEnabled={false}
         zoomEnabled
@@ -102,7 +100,7 @@ const ScratchMap: FC = () => {
         <Camera bounds={{ ne: [11.64, -17.93], sw: [24.08, -4.44] }} />
         <VectorSource
           id="countrySource"
-          url="mapbox://mapbox.country-boundaries-v1"
+          url={process.env.EXPO_PUBLIC_MAPBOX_DATA_SOURCE}
           onPress={countryPressHandler}
         >
           <BackgroundLayer

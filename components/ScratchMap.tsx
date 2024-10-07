@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
-import { StyleSheet } from 'react-native'
 import type { FC } from 'react'
+import { StyleSheet } from 'react-native'
 
 import { useTheme } from '@rneui/themed'
 import Mapbox, {
@@ -17,17 +17,20 @@ import type { OnPressEvent } from '@rnmapbox/maps/lib/typescript/src/types/OnPre
 import { useBottomSheetModal } from '../hooks/useBottomSheetModal'
 import StyledBottomSheetModal from './ui/StyledBottomSheetModal'
 import ScratchMapBottomSheetContent from './ScratchMapBottomSheetContent'
+import { CameraBoundsWithPadding } from '@rnmapbox/maps/lib/typescript/src/components/Camera'
+import { bbox } from '@turf/bbox'
 
 interface Country {
-  name: string
-  code: string
+  name_en: string
+  iso_3166_1: string
+  bounds?: CameraBoundsWithPadding
 }
 
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || null)
 
 const DEFAULT_SELECTED_COUNTRY: Country = {
-  name: '',
-  code: '',
+  name_en: '',
+  iso_3166_1: '',
 }
 
 const ScratchMap: FC = () => {
@@ -46,17 +49,23 @@ const ScratchMap: FC = () => {
 
   const countryPressHandler = (event: OnPressEvent) => {
     const { name_en, iso_3166_1 } = event.features[0].properties || {}
-    setSelectedCountry({ name: name_en, code: iso_3166_1 })
-    presentModal()
+
+    const boundaryBox = bbox(event.features[0])
+    const bounds: CameraBoundsWithPadding = {
+      ne: [boundaryBox[0], boundaryBox[1]],
+      sw: [boundaryBox[2], boundaryBox[3]],
+    }
     console.log(event.features[0])
+    setSelectedCountry({ name_en, iso_3166_1, bounds })
+    presentModal()
   }
 
   const countryVisitedHandler = () => {
     setVisitedCountries((prevVisitedCountries: string[]) => {
-      if (prevVisitedCountries.includes(selectedCountry.code)) {
-        return prevVisitedCountries.filter((country) => country !== selectedCountry.code)
+      if (prevVisitedCountries.includes(selectedCountry.iso_3166_1)) {
+        return prevVisitedCountries.filter((country) => country !== selectedCountry.iso_3166_1)
       } else {
-        return [...prevVisitedCountries, selectedCountry.code]
+        return [...prevVisitedCountries, selectedCountry.iso_3166_1]
       }
     })
   }
@@ -65,7 +74,7 @@ const ScratchMap: FC = () => {
     <>
       <StyledBottomSheetModal ref={bottomSheetModalRef} index={0} enableDynamicSizing>
         <ScratchMapBottomSheetContent
-          heading={selectedCountry.name}
+          heading={selectedCountry.name_en}
           // TODO Update onPress
           buttons={[
             {
@@ -73,7 +82,7 @@ const ScratchMap: FC = () => {
               // iconProps: {
               //   name: 'where-to-vote',
               // },
-              color: visitedCountries.includes(selectedCountry.code) ? 'success' : 'neutral',
+              color: visitedCountries.includes(selectedCountry.iso_3166_1) ? 'success' : 'neutral',
               fullWidth: true,
               onPress: countryVisitedHandler,
             },
@@ -97,7 +106,7 @@ const ScratchMap: FC = () => {
         zoomEnabled
         onPress={closeModalHandler}
       >
-        <Camera bounds={{ ne: [11.64, -17.93], sw: [24.08, -4.44] }} />
+        <Camera bounds={selectedCountry.bounds} zoomLevel={1} />
         <VectorSource
           id="countrySource"
           url={process.env.EXPO_PUBLIC_MAPBOX_DATA_SOURCE}
@@ -158,7 +167,7 @@ const ScratchMap: FC = () => {
             belowLayerID="country-labels-md"
             style={{
               fillColor: colors.text,
-              fillOpacity: ['match', ['get', 'iso_3166_1'], selectedCountry.code, 0.1, 0],
+              fillOpacity: ['match', ['get', 'iso_3166_1'], selectedCountry.iso_3166_1, 0.1, 0],
             }}
           />
           <LineLayer
@@ -174,7 +183,7 @@ const ScratchMap: FC = () => {
               lineColor: colors.text,
               lineWidth: [
                 'case',
-                ['match', ['get', 'iso_3166_1'], selectedCountry.code, true, false],
+                ['match', ['get', 'iso_3166_1'], selectedCountry.iso_3166_1, true, false],
                 2.5,
                 ['match', ['get', 'iso_3166_1'], visitedCountries, true, false],
                 1.5,

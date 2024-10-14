@@ -1,12 +1,10 @@
 import { FC } from 'react'
-import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View } from 'react-native'
-import ScratchMap from '../components/ScratchMap'
+import ScratchMap from '../../components/ScratchMap'
 
 const MapScreen: FC = () => {
   return (
     <View style={styles.rootContainer}>
-      <StatusBar style='dark' />
       <View style={styles.container}>
         <ScratchMap />
       </View>

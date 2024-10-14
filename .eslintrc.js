@@ -32,7 +32,7 @@ module.exports = {
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        paths: ['components', 'navigation', 'screens', 'styles', 'utils'],
+        paths: ['app', 'components', 'hooks', 'styles', 'utils'],
       },
       typescript: {
         alwaysTryTypes: true,
@@ -55,6 +55,5 @@ module.exports = {
         caughtErrorsIgnorePattern: '^_',
       },
     ],
-    // 'prettier/prettier': 'error',
   },
 }

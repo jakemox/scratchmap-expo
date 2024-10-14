@@ -6,6 +6,17 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: 'scratchmap-expo',
   plugins: [
     [
+      'expo-build-properties',
+      {
+        ios: {
+          newArchEnabled: true,
+        },
+        android: {
+          newArchEnabled: true,
+        },
+      },
+    ],
+    [
       '@rnmapbox/maps',
       {
         RNMapboxMapsDownloadToken: process.env.MAPBOX_SECRET_KEY || '',
